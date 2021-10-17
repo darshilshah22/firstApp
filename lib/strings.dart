@@ -20,4 +20,9 @@ class Strings{
   static const String userAvailable = "User already available";
   static const String somethingWrong = "Something went wrong";
   static const String logout = "Logout";
+  static const String welcome = "Welcome";
+  static const String uploadImage = "Upload image";
+  static const String data1 = "Data1";
+  static const String data2 = "Data2";
+  static const String submit = "Submit";
 }

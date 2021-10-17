@@ -28,7 +28,8 @@ class _EmailLoginState extends State<EmailLogin> {
           _buildEmailText(),
           _buildPasswordInput(),
           _buildForgotPassword(),
-          _buildLoginButton()
+          _buildLoginButton(),
+          _buildRegisterButton()
         ],
       )),
     );
@@ -45,6 +46,48 @@ class _EmailLoginState extends State<EmailLogin> {
                 fontSize: 30,
                 fontWeight: FontWeight.bold)),
       ),
+    );
+  }
+
+  Widget _buildRegisterButton(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: TextButton(
+            onPressed: (){
+              Navigator.pushNamed(context, '/register');
+            },
+            child: Text(
+              Strings.register,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24)),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: TextButton(
+            onPressed: (){
+              Navigator.pushNamed(context, '/');
+            },
+            child: Text(
+              Strings.login,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24)),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

@@ -22,7 +22,7 @@ class _MobileLoginState extends State<MobileLogin> {
   bool? isEnterOTP;
   final AuthenticationServices _auth = AuthenticationServices();
   bool isLoading = false;
-  bool? isLogin;
+  String? otp;
 
   @override
   void initState() {
@@ -48,7 +48,8 @@ class _MobileLoginState extends State<MobileLogin> {
               if(isLoading)_buildProgressIndicator(),
               _buildTitle(),
               _buildMobileInput(),
-              if(isOTP)_buildOtpInput()
+              if(isOTP)_buildOtpInput(),
+              _buildRegisterButton()
             ],
           )),
     );
@@ -86,7 +87,7 @@ class _MobileLoginState extends State<MobileLogin> {
           setState(() {
             isOTP = true;
           });
-          isLogin = await _auth.checkMobile(mobileController.text, otpController.text);
+          await _auth.checkMobile(mobileController.text, otpController.text);
         },
         decoration: InputDecoration(
           hintText: Strings.mobile,
@@ -122,21 +123,63 @@ class _MobileLoginState extends State<MobileLogin> {
         ),
         enableActiveFill: true,
         onChanged: (String value) {  },
-
+        onCompleted: (String value){
+          setState(() {
+            otp = value;
+          });
+        },
       ),
+    );
+  }
+
+  Widget _buildRegisterButton(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: TextButton(
+              onPressed: (){
+                Navigator.pushNamed(context, '/register');
+              },
+              child: Text(
+                Strings.register,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24)),
+              ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: TextButton(
+            onPressed: (){
+              Navigator.pushNamed(context, '/email');
+            },
+            child: Text(
+              Strings.email,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24)),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildLoginButton() {
     return InkWell(
       onTap: () async {
-        if(isLogin == true){
-          setState(() {
-            isLoading = false;
-          });
+        bool isLogin = await _auth.signInPhoneNumber(mobileController.text, otp!);
+        if(isLogin){
           Navigator.pushNamed(context, '/home');
-        }else{
-          Navigator.pushNamed(context, '/register');
         }
       },
       child: Container(

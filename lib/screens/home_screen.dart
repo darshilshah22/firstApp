@@ -15,19 +15,21 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   UserData? userData;
 
-  Future<void> getUserData() async {
-    userData = await PreferenceHelper.getUser();
-  }
-
   @override
   void initState() {
+    super.initState();
     userData = UserData();
     getUserData();
-    super.initState();
+  }
+
+  void getUserData() async {
+    userData = await PreferenceHelper.getUser();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    getUserData();
     return Scaffold(
       body: SafeArea(
           child: Center(

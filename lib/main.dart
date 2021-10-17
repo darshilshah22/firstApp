@@ -3,6 +3,9 @@ import 'package:firstapp/screens/home_screen.dart';
 import 'package:firstapp/screens/login_screen.dart';
 import 'package:firstapp/screens/mobile_login.dart';
 import 'package:firstapp/screens/register_screen.dart';
+import 'package:firstapp/screens/screen_one.dart';
+import 'package:firstapp/screens/screen_two.dart';
+import 'package:firstapp/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -25,11 +28,14 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => const MobileLogin(),
+        '/': (context) => const ScreenOne(),
         // When navigating to the "/second" route, build the SecondScreen widget.
         '/email': (context) => const EmailLogin(),
+        '/mobile': (context) => const MobileLogin(),
         '/register': (context) => const RegisterScreen(),
         '/home': (context) => const HomeScreen(),
+        '/splash': (context) => const SplashScreen(),
+        '/screenTwo': (context) => const ScreenTwo(),
       },
     );
   }

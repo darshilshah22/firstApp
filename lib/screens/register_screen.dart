@@ -17,7 +17,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailRController = TextEditingController();
   final TextEditingController passwordRController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final AuthenticationServices _auth = AuthenticationServices();
   bool isLoading = false;
 
@@ -25,24 +26,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if(isLoading)_buildProgressIndicator(),
-              _buildTitle(),
-              _buildNameInput(),
-              _buildPhoneInput(),
-              _buildEmailInput(),
-              _buildPasswordInput(),
-              _buildConfirmPasswordInput(),
-              _buildRegisterButton()
-            ],
-          )),
+          child: Stack(children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildTitle(),
+            _buildNameInput(),
+            _buildPhoneInput(),
+            _buildEmailInput(),
+            _buildPasswordInput(),
+            _buildConfirmPasswordInput(),
+            _buildRegisterButton(),
+            _buildRegister(),
+          ],
+        ),
+            if(isLoading)_buildProgressIndicator(),
+      ])),
     );
   }
 
-  Widget _buildProgressIndicator(){
+  Widget _buildProgressIndicator() {
     return const Center(
       child: CircularProgressIndicator(
         color: Colors.black,
@@ -206,18 +210,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget _buildRegisterButton() {
     return InkWell(
-      onTap: (){
-        setState(() {
-          isLoading = true;
-        });
-        bool isRegister = _auth.checkValidations(firstNameController.text, lastNameController.text, phoneController.text, emailRController.text,
-            passwordRController.text, confirmPasswordController.text);
-        if(isRegister){
-          setState(() {
-            isLoading = false;
-          });
-          // Navigator.pushNamed(context, '/home');
-        }
+      onTap: () async {
+        _auth.checkValidations(context,
+            firstNameController.text,
+            lastNameController.text,
+            phoneController.text,
+            emailRController.text,
+            passwordRController.text,
+            confirmPasswordController.text);
       },
       child: Container(
         margin: const EdgeInsets.only(left: 18, right: 18, top: 25),
@@ -238,6 +238,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildRegister() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/');
+            },
+            child: Text(
+              Strings.login,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24)),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/email');
+            },
+            child: Text(
+              Strings.email,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24)),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
